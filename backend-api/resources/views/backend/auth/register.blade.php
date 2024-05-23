@@ -28,10 +28,7 @@
                         <label for="password" class="form-label">Password</label>
                         <input type="password" name="password" class="form-control" required>
                     </div>
-                    <div class="mb-3">
-                        <label for="password_confirmation" class="form-label">Confirm Password</label>
-                        <input type="password" name="password_confirmation" class="form-control" required>
-                    </div>
+
                     <div class="mb-3">
                         <div class="d-grid">
                             <button class="btn btn-primary">Create Account</button>

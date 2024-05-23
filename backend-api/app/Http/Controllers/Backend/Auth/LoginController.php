@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Backend\Auth;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Requests\LoginRequest;
 use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
@@ -13,14 +13,23 @@ class LoginController extends Controller
         return view('backend.auth.login');
     }
 
-    public function handleLogin(Request $request)
+    public function handleLogin(LoginRequest $request)
     {
+        if (auth()->attempt($request->validated())) {
+            return redirect()->route('admin.home');
+        }
+
+        return back()
+            ->withInput($request->only('email'))
+            ->withErrors([
+                'email' => 'The provided credentials do not match our records.',
+            ]);
 
     }
 
     public function logout()
     {
-        Auth::logout();
+        auth()->logout();
         return redirect()->route('auth.login');
     }
 }

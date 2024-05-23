@@ -15,7 +15,7 @@
                         <a class="nav-link active" aria-current="page" href="#">Home</a>
                     </li>
                 </ul>
-                <form action="{{ route('logout') }}" method="POST" class="d-flex" role="search">
+                <form action="{{ route('auth.logout') }}" method="POST" class="d-flex" role="search">
                     @csrf
                     @method('DELETE')
                     <button class="btn btn-danger" type="submit">Logout</button>
