@@ -1,2 +1,4 @@
-## Clone the project
-   composer install
+> [!IMPORTANT]
+> Key information users need to know to run the above project.
+# Clone the project
+   run composer selfupdate
