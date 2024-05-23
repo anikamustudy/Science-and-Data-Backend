@@ -37,6 +37,14 @@
                             <button class="btn btn-primary">Create Account</button>
                         </div>
                     </div>
+                    <div class="floatend">
+                        <a href="{{ route('auth.login') }}">
+
+                            <span class="text-primary">
+                                Access Account
+                            </span>
+                        </a>
+                    </div>
                 </form>
             </div>
         </div>
