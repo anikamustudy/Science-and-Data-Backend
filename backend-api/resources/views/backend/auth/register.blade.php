@@ -17,8 +17,8 @@
                 <form action="{{ route('auth.handle.register') }}" method="POST">
                     @csrf
                     <div class="mb-3">
-                        <label for="email" class="form-label">Full Name</label>
-                        <input type="text" name="email" class="form-control" placeholder="Enter Full Name" required>
+                        <label for="name" class="form-label">Full Name</label>
+                        <input type="text" name="name" class="form-control" placeholder="Enter Full Name" required>
                     </div>
                     <div class="mb-3">
                         <label for="email" class="form-label">Email address</label>
