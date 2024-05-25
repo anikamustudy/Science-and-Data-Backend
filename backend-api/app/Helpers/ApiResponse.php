@@ -4,22 +4,21 @@ namespace App\Helpers;
 
 class ApiResponse
 {
-    public static function success($data, $message = null, $code = 200)
+    public static function success($data, $message = '', $status = 200)
     {
-        return response()->json(
-            [
-                'status' => 'success',
-                'message' => $message,
-                'data' => $data,
-            ], $code);
+        return response()->json([
+            'status' => 'success',
+            'message' => $message,
+            'data' => $data,
+        ], $status);
     }
 
-    public static function error($message, $code)
+    public static function error($message = '', $status = 400)
     {
         return response()->json([
             'status' => 'error',
             'message' => $message,
-        ], $code);
+            'data' => null,
+        ], $status);
     }
-
 }
