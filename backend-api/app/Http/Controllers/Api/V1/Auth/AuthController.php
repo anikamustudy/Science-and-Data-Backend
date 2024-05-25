@@ -2,42 +2,56 @@
 
 namespace App\Http\Controllers\Api\V1\Auth;
 
-use App\Http\Controllers\Api\V1\BaseController as BaseController;
+use App\Helpers\ApiResponse;
+use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 
-class AuthController extends BaseController
+class AuthController extends Controller
 {
     public function register(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required',
-
+        $validatedData = $request->validate([
+            'name' => 'required|string',
+            'email' => 'required|string|email|unique:users,email',
+            'password' => 'required|string|min:8|confirmed',
         ]);
 
-        if ($validator->fails()) {
-            return $this->errorResponse('Validation Error.', $validator->errors());
-        }
-        $data = $request->all();
-        $data['password'] = Hash::make($data['password']);
-        $user = User::create($data);
-        $success['token'] = $user->createToken('Science&Data')->plainTextToken;
-        $success['name'] = $user->name;
+        $user = User::create([
+            'name' => $validatedData['name'],
+            'email' => $validatedData['email'],
+            'password' => Hash::make($validatedData['password']),
+        ]);
 
-        return $this->successResponse($success, 'User register successfully.');
+        $user['token'] = $user->createToken('science&data')->plainTextToken;
+
+        return ApiResponse::success($user, 'User registered successfully', 201);
     }
 
-    public function login()
+    public function login(Request $request)
     {
-        return response()->json(['message' => 'Hello Login']);
+        $request->validate([
+            'email' => 'required|string|email',
+            'password' => 'required|string',
+        ]);
+
+        $user = User::where('email', $request->email)->first();
+
+        if (!$user || !Hash::check($request->password, $user->password)) {
+            throw ValidationException::withMessages([
+                'email' => ['The provided credentials are incorrect.'],
+            ]);
+        }
+        //$user = Auth::user();
+        $token = $user->createToken('science&data')->plainTextToken;
+        return ApiResponse::success(['token' => $token], 'User logged in successfully');
     }
 
     public function logout()
     {
-        return response()->json(['message' => 'Hello Logout']);
+        auth()->user()->tokens()->delete();
+        return ApiResponse::success(null, 'User logged out successfully', 204);
     }
 }
