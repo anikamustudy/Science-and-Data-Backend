@@ -25,8 +25,6 @@ class AuthController extends Controller
             'password' => Hash::make($validatedData['password']),
         ]);
 
-        $user['token'] = $user->createToken('science&data')->plainTextToken;
-
         return ApiResponse::success($user, 'User registered successfully', 201);
     }
 
@@ -52,6 +50,6 @@ class AuthController extends Controller
     public function logout()
     {
         auth()->user()->tokens()->delete();
-        return ApiResponse::success(null, 'User logged out successfully', 204);
+        return ApiResponse::success(null, 'User logged out successfully', 200);
     }
 }
