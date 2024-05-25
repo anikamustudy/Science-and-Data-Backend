@@ -24,7 +24,7 @@ class AuthController extends Controller
             'email' => $validatedData['email'],
             'password' => Hash::make($validatedData['password']),
         ]);
-
+        $user['token'] = $user->createToken('science&data')->plainTextToken;
         return ApiResponse::success($user, 'User registered successfully', 201);
     }
 

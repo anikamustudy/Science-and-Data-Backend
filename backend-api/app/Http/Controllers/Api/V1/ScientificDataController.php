@@ -12,6 +12,7 @@ class ScientificDataController extends Controller
 {
     public function index(Request $request)
     {
+
         $query = ScientificData::query();
         if ($request->has('search')) {
             $search = $request->input('search');
@@ -19,7 +20,7 @@ class ScientificDataController extends Controller
                 ->orWhere('description', 'LIKE', "%{$search}%")
                 ->orWhere('visibility', 'LIKE', "%{$search}%");
         }
-        $data = $query->get();
+        $data = $query->orderBy('id', 'DESC')->get();
         return ApiResponse::success($data, 'Data retrieved successfully');
     }
 
@@ -46,6 +47,16 @@ class ScientificDataController extends Controller
     {
         $scientificData = ScientificData::findOrFail($id);
         return ApiResponse::success($scientificData, 'Data retrieved successfully');
+    }
+
+    
+    public function toggleVisibility($id, Request $request)
+    {
+        $data = ScientificData::findOrFail($id);
+        $data->visibility = $request->visibility;
+        $data->save();
+
+        return ApiResponse::success($data, 'Visibility updated successfully');
     }
 
     public function update(Request $request, $id)

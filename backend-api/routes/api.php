@@ -14,4 +14,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/scientific-data/{id}', [ScientificDataController::class, 'show']);
     Route::put('/scientific-data/{id}', [ScientificDataController::class, 'update']);
     Route::delete('/scientific-data/{id}', [ScientificDataController::class, 'destroy']);
+    Route::put('/scientific-data/{id}/visibility', [ScientificDataController::class, 'toggleVisibility']);
 });
